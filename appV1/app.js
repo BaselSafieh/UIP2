@@ -52,7 +52,7 @@ function shuffleArray(array) {
 function Expression(option) {
     this.a = getRandomInt(-6, 7);
     while (this.a == 0)
-        this.a = getRandomInt(-6, 7);
+    this.a = getRandomInt(-6, 7);
     this.c = getRandomInt(1, 11);
     this.x = getRandomInt(1, 6);
     this.b = this.c - this.a * this.x;
@@ -116,27 +116,54 @@ $(document).ready(function () {
 
     $('#myb').click(function () {
         exp = new Expression();
-        $('#result').text(exp.print())
+        $('#result').text(exp.print());
     });
     $('#add').click(function () {
         exp.add(parseInt($('#val').val()));
-        $('#result').text(exp.print())
+        $('#result').text(exp.print());
     });
     $('#sub').click(function () {
         exp.divide(parseInt($('#val').val()));
-        $('#result').text(exp.print())
+        $('#result').text(exp.print());
     });
     $('#getoptions').click(function () {
 
         $('#options').html("");
 
         exp.getOptions().forEach(function (item, index) {
-            $('#options').append('<li class= "options"">' + item + '</li>')
+          /*if (item > 0) {
+            $('#options').append('<li class = "options"><a> +' + item + '</a></li>');
+          } else {
+            $('#options').append('<li class = "options"><a>' + item + '</a></li>');
+
+          }*/
+          if (exp.b != 0) { //addition
+
+              if (item > 0) {
+                $('#options').append('<li class = "options"><a>Add a ' + item + '</a></li>');
+              } else {
+                $('#options').append('<li class = "options"><a>Subtract by ' + item + '</a></li>');
+
+              }
+
+            } else if (exp.b == 0 && exp.a != 1) {  //division
+
+              if (item > 0) {
+                $('#options').append('<li class = "options"><a>Divide by ' + item + '</a></li>');
+              } else {
+                $('#options').append('<li class = "options"><a>Divide by ' + item + '</a></li>');
+
+              }
+
+            }
         });
 
         $(document).off('click', '.options')
         $(document).on('click', '.options', function () {
-            var option = parseInt($(this).text());
+            var optionText = $(this).text();
+            var option = optionText.split(" ");
+            var option = parseInt(option[2]);
+
             if (exp.b != 0) {
                 exp.add(option);
                 (exp.b == 0)? $('#feedback').text("Correct! :D"):$('#feedback').text("False :(")
